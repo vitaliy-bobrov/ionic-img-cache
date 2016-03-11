@@ -11,6 +11,7 @@ This library works with Ionic Framework (v >= 1.1), the supported platforms bein
 
 ## Instalation
 
+* Install via bower `bower install --save ionic-img-cache`
 * Add **imgcache.js** and **ionic-img-cache.min.js** files to your app index.html file.
 * Inject into app.js, example:
 ```angular.module('app', [
