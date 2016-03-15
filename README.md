@@ -2,7 +2,7 @@
 
 Ionic directive to cache images on first load.
 
-This library works with Ionic Framework (v >= 1.1), the supported platforms being:
+This library works with Ionic Framework (v >= 1.0), the supported platforms being:
 
 * Android
 * iOS
@@ -40,7 +40,7 @@ Example:
 
 License
 -------
-Copyright 2012-2016 (c) Christophe BENOIT
+Copyright 2012-2016 (c) Vitaliy BOBROV
 
 Apache License - see LICENSE.md
 
