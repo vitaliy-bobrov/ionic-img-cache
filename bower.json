@@ -1,6 +1,7 @@
 {
   "name": "ionic-img-cache",
-  "main": "ionic-img-cache.min.js",
+  "main": "ionic-img-cache.js",
+  "version": "1.0.2",
   "homepage": "https://github.com/vitaliy-bobrov/ionic-img-cache",
   "authors": [
     "Vitaliy Bobrov <bobrov1989@gmail.com>"

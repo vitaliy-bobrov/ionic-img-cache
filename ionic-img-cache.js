@@ -10,6 +10,7 @@
 
   function init($ionicPlatform) {
     ImgCache.options.debug = false;
+    ImgCache.options.skipURIencoding = true;
     ImgCache.options.chromeQuota = 50*1024*1024;
 
     $ionicPlatform.ready(function() {
