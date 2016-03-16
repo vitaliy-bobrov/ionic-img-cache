@@ -21,7 +21,7 @@
 
   function ionImgCacheSrv($q) {
     var service = {
-      heckCacheStatus: checkCacheStatus
+      checkCacheStatus: checkCacheStatus
     };
 
     return service;
@@ -45,7 +45,9 @@
     }
   }
 
-  function ionImgCache() {
+  ionImgCache.$inject = ['ionImgCacheSrv'];
+
+  function ionImgCache(ionImgCacheSrv) {
     var directive = {
       restrict: 'A',
       link: link
@@ -53,17 +55,12 @@
 
     return directive;
 
-    function link(scope, el, attrs) {
+    function link(scope, element, attrs) {
       attrs.$observe('ngSrc', function(src) {
-        ImgCache.isCached(src, function(path, success) {
-          if (success) {
-            ImgCache.useCachedFile(el);
-          } else {
-            ImgCache.cacheFile(src, function() {
-              ImgCache.useCachedFile(el);
-            });
-          }
-        });
+        ionImgCacheSrv.checkCacheStatus(src)
+          .then(function() {
+            ImgCache.useCachedFile(element);
+          });
       });
     }
   }
