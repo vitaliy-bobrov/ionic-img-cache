@@ -1,5 +1,7 @@
 # ionic-img-cache
 
+[![Bower version](https://badge.fury.io/bo/ionic-img-cache.svg)](https://badge.fury.io/bo/ionic-img-cache)
+
 Ionic directive to cache images on first load.
 
 This library works with Ionic Framework (v >= 1.0), the supported platforms being:
