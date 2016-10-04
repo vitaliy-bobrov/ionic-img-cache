@@ -21,11 +21,10 @@
   ionImgCacheSrv.$inject = ['$q'];
 
   function ionImgCacheSrv($q) {
-    var service = {
-      checkCacheStatus: checkCacheStatus
+    return {
+      checkCacheStatus: checkCacheStatus,
+      clearCache: clearCache
     };
-
-    return service;
 
     function checkCacheStatus(src) {
       var defer = $q.defer();
@@ -41,6 +40,18 @@
           }, defer.reject);
         }
       }, defer.reject);
+
+      return defer.promise;
+    }
+
+    function clearCache() {
+      var defer = $q.defer();
+
+      ImgCache.clearCache(function() {
+        defer.resolve;
+      }, function() {
+        defer.reject;
+      });
 
       return defer.promise;
     }

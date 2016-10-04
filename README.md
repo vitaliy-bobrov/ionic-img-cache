@@ -40,11 +40,8 @@ Example:
 
 `<img ion-img-cache ng-src="{{ imagePath }}"/>`
 
-License
--------
-Copyright 2012-2016 (c) Vitaliy BOBROV
+Clearing cache:
 
-Apache License - see LICENSE.md
+`ionImgCacheSrv.clearCache()` - returns promise, so you can chain it with `.then` and/or `.catch`.
 
-Code from http://code.google.com/p/tiny-sha1/ is being used which is under the MIT License.
-The copyright for this part belongs to the creator of this work.
+Unfortunaly there is no way to invalidate single image now.
