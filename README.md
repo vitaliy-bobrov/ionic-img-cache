@@ -89,6 +89,14 @@ Enables ImgCache debug mode.
 
 Quota for storage size available for cached images in MB.
 
+### folder
+
+**Type**: String
+
+**Default value**: ion-img-cache
+
+Set name of cached files directory.
+
 Example:
 
 ```javascript
