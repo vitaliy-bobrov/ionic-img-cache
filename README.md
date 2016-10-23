@@ -14,13 +14,13 @@ This library works with Ionic Framework (v >= 1.0), the supported platforms bein
 
 ## Instalation
 
-* Install via bower
+* Install
+  * Bower
+  `bower install --save ionic-img-cache`
 
-`bower install --save ionic-img-cache`
+  * npm
+  `npm install --save ionic-img-cache`
 
-or npm
-
-```bash npm install --save ionic-img-cache```
 * Add **imgcache.js** and **ionic-img-cache.min.js** files to your app index.html file.
 * Install required [cordova plugins](#required-cordova-plugins):
   ```
@@ -37,14 +37,14 @@ or npm
 ```
 
 * Edit **config.xml** file:
-  * Add `xml <access origin="*"/>`
+  * Add `<access origin="*"/>`
   * For Android add:
   ```xml
     <access origin="cdvfile://*"/>
     <allow-intent href="cdvfile://*"/>
     <preference name="AndroidPersistentFileLocation" value="Compatibility" />
   ```
-  * For iOS add `xml <preference name="iosPersistentFileLocation" value="Library"/>`
+  * For iOS add `<preference name="iosPersistentFileLocation" value="Library"/>`
 
 ### Required cordova plugins:
 
@@ -58,7 +58,7 @@ Just add `ion-img-cache` attribute to `img` tag you want to cache.
 
 Example:
 
-```xml <img ion-img-cache ng-src="{{ imagePath }}"/>```
+`<img ion-img-cache ng-src="{{ imagePath }}"/>`
 
 ## Clearing cache:
 
@@ -71,13 +71,17 @@ Unfortunaly there is no way to invalidate single image now.
 Caching can be configured via `ionicImgCacheProvider`, there are available parameters in this provider:
 
 ### debug
+
 **Type**: Boolean
+
 **Default value**: false
 
 Enables ImgCache debug mode.
 
 ### quota
+
 **Type**: Number
+
 **Default value**: 50
 
 Quota for storage size available for cached images in MB.
