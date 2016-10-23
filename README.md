@@ -16,20 +16,20 @@ This library works with Ionic Framework (v >= 1.0), the supported platforms bein
 
 * Install via bower
 
-```bash bower install --save ionic-img-cache```
+`bower install --save ionic-img-cache`
 
 or npm
 
 ```bash npm install --save ionic-img-cache```
 * Add **imgcache.js** and **ionic-img-cache.min.js** files to your app index.html file.
 * Install required [cordova plugins](#required-cordova-plugins):
-  ```bash
-  cordova plugin add cordova-plugin-device
-  cordova plugin add cordova-plugin-file-transfer
+  ```
+    cordova plugin add cordova-plugin-device
+    cordova plugin add cordova-plugin-file-transfer
   ```
 * Inject as dependency into your app, example:
 
-```js
+```javascript
   angular.module('app', [
       'ionic',
       'ionicImgCache'
@@ -37,14 +37,14 @@ or npm
 ```
 
 * Edit **config.xml** file:
-  * Add `<access origin="*"/>`
+  * Add `xml <access origin="*"/>`
   * For Android add:
   ```xml
     <access origin="cdvfile://*"/>
     <allow-intent href="cdvfile://*"/>
     <preference name="AndroidPersistentFileLocation" value="Compatibility" />
   ```
-  * For iOS add `<preference name="iosPersistentFileLocation" value="Library"/>`
+  * For iOS add `xml <preference name="iosPersistentFileLocation" value="Library"/>`
 
 ### Required cordova plugins:
 
@@ -58,7 +58,7 @@ Just add `ion-img-cache` attribute to `img` tag you want to cache.
 
 Example:
 
-```html <img ion-img-cache ng-src="{{ imagePath }}"/>```
+```xml <img ion-img-cache ng-src="{{ imagePath }}"/>```
 
 ## Clearing cache:
 
@@ -84,7 +84,7 @@ Quota for storage size available for cached images in MB.
 
 Example:
 
-```js
+```javascript
 angular.module('app')
   .config(function($ionicImgCacheProvider) {
     // Enable imgCache debugging.
