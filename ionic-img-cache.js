@@ -1,4 +1,4 @@
-(function() {
+(function(document) {
   'use strict';
 
   angular
@@ -6,13 +6,15 @@
     .run(init)
     .provider('ionicImgCache', ionicImgCacheProvider)
     .factory('ionImgCacheSrv', ionImgCacheSrv)
-    .directive('ionImgCache', ionImgCache);
+    .directive('ionImgCache', ionImgCache)
+    .directive('ionImgCacheBg', ionImgCacheBg);
 
   function init($ionicPlatform, ionicImgCache) {
     /* ngInject */
 
-    ImgCache.options.debug = ionicImgCache.debug;
     ImgCache.options.skipURIencoding = true;
+    ImgCache.options.debug = ionicImgCache.debug;
+    ImgCache.options.localCacheFolder = ionicImgCache.folder;
     ImgCache.options.chromeQuota = ionicImgCache.quota * 1024 * 1024;
 
     $ionicPlatform.ready(function() {
@@ -45,6 +47,7 @@
   function ionicImgCacheProvider() {
     var debug = false;
     var quota = 50;
+    var folder = 'ionic-img-cache';
 
     this.debug = function(value) {
       debug = !!value;
@@ -54,10 +57,15 @@
       quota = isFinite(value) ? value : 50;
     }
 
+    this.folder = function(value) {
+      folder = '' + value;
+    }
+
     this.$get = function() {
       return {
         debug: debug,
-        quota: quota
+        quota: quota,
+        folder: folder
       };
     };
   }
@@ -67,6 +75,7 @@
 
     return {
       checkCacheStatus: checkCacheStatus,
+      checkBgCacheStatus: checkBgCacheStatus,
       clearCache: clearCache
     };
 
@@ -81,6 +90,28 @@
             } else {
               ImgCache.cacheFile(src, function() {
                 ImgCache.isCached(src, function(path, success) {
+                  defer.resolve(path);
+                }, defer.reject);
+              }, defer.reject);
+            }
+          }, defer.reject);
+        })
+        .catch(defer.reject);
+
+      return defer.promise;
+    }
+
+    function checkBgCacheStatus(element) {
+      var defer = $q.defer();
+
+      _checkImgCacheReady()
+        .then(function() {
+          ImgCache.isBackgroundCached(element, function(path, success) {
+            if (success) {
+              defer.resolve(path);
+            } else {
+              ImgCache.cacheBackground(element, function() {
+                ImgCache.isBackgroundCached(element, function(path, success) {
                   defer.resolve(path);
                 }, defer.reject);
               }, defer.reject);
@@ -137,4 +168,27 @@
       });
     }
   }
-})();
+
+  function ionImgCacheBg(ionImgCacheSrv) {
+    /* ngInject */
+
+    return {
+      restrict: 'A',
+      link: link
+    };
+
+    function link(scope, element, attrs) {
+      ionImgCacheSrv.checkBgCacheStatus(element)
+        .then(function() {
+          ImgCache.useCachedBackground(element);
+        });
+
+      attrs.$observe('ngStyle', function() {
+        ionImgCacheSrv.checkBgCacheStatus(element)
+          .then(function() {
+            ImgCache.useCachedBackground(element);
+          });
+      });
+    }
+  }
+})(document);

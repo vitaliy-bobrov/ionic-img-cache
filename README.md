@@ -3,7 +3,7 @@
 [![Bower version](https://badge.fury.io/bo/ionic-img-cache.svg)](https://badge.fury.io/bo/ionic-img-cache)
 [![npm version](https://badge.fury.io/js/ionic-img-cache.svg)](https://badge.fury.io/js/ionic-img-cache)
 
-Ionic directive to cache images on first load.
+Ionic directive to cache images or element background images on first load.
 
 This library works with Ionic Framework (v >= 1.0), the supported platforms being:
 
@@ -57,8 +57,11 @@ This library works with Ionic Framework (v >= 1.0), the supported platforms bein
 Just add `ion-img-cache` attribute to `img` tag you want to cache.
 
 Example:
+  Image:
+  `<img ion-img-cache ng-src="{{ imagePath }}"/>`
 
-`<img ion-img-cache ng-src="{{ imagePath }}"/>`
+  Background image:
+  `<div ion-img-cache-bg>Element with abckground image set with css or ng-style</div>`
 
 ## Clearing cache:
 
