@@ -16,7 +16,29 @@
     ImgCache.options.chromeQuota = ionicImgCache.quota * 1024 * 1024;
 
     $ionicPlatform.ready(function() {
-      ImgCache.init();
+      ImgCache.init(function() {
+        var message = 'ionicImgCache initialized';
+
+        if (ionicImgCache.debug) {
+          if (console.info) {
+            console.info(message);
+          }
+          else {
+            console.log(message);
+          }
+        }
+      }, function() {
+        var message = 'Failed to init ionicImgCache.';
+
+        if (ionicImgCache.debug) {
+          if (console.error) {
+            console.error(message);
+          }
+          else {
+            console.log(message);
+          }
+        }
+      });
     });
   }
 
@@ -35,7 +57,7 @@
     this.$get = function() {
       return {
         debug: debug,
-        quota: chromeQuota
+        quota: quota
       };
     };
   }
@@ -51,17 +73,21 @@
     function checkCacheStatus(src) {
       var defer = $q.defer();
 
-      ImgCache.isCached(src, function(path, success) {
-        if (success) {
-          defer.resolve(path);
-        } else {
-          ImgCache.cacheFile(src, function() {
-            ImgCache.isCached(src, function(path, success) {
+      _checkImgCacheReady()
+        .then(function() {
+          ImgCache.isCached(src, function(path, success) {
+            if (success) {
               defer.resolve(path);
-            }, defer.reject);
+            } else {
+              ImgCache.cacheFile(src, function() {
+                ImgCache.isCached(src, function(path, success) {
+                  defer.resolve(path);
+                }, defer.reject);
+              }, defer.reject);
+            }
           }, defer.reject);
-        }
-      }, defer.reject);
+        })
+        .catch(defer.reject);
 
       return defer.promise;
     }
@@ -69,11 +95,26 @@
     function clearCache() {
       var defer = $q.defer();
 
-      ImgCache.clearCache(function() {
-        defer.resolve;
-      }, function() {
-        defer.reject;
-      });
+      _checkImgCacheReady()
+        .then(function() {
+          ImgCache.clearCache(defer.resolve, defer.reject);
+        })
+        .catch(defer.reject);
+
+      return defer.promise;
+    }
+
+    function _checkImgCacheReady() {
+      var defer = $q.defer();
+
+      if (ImgCache.ready) {
+        defer.resolve();
+      }
+      else{
+        document.addEventListener('ImgCacheReady', function() {
+          defer.resolve();
+        }, false);
+      }
 
       return defer.promise;
     }
@@ -82,12 +123,10 @@
   function ionImgCache(ionImgCacheSrv) {
     /* ngInject */
 
-    var directive = {
+    return {
       restrict: 'A',
       link: link
     };
-
-    return directive;
 
     function link(scope, element, attrs) {
       attrs.$observe('ngSrc', function(src) {
