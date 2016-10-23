@@ -38,7 +38,8 @@ or npm
 
 * Edit **config.xml** file:
   * Add `<access origin="*"/>`
-  * For Android add ```
+  * For Android add:
+  ```xml
     <access origin="cdvfile://*"/>
     <allow-intent href="cdvfile://*"/>
     <preference name="AndroidPersistentFileLocation" value="Compatibility" />
