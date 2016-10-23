@@ -1,26 +1,48 @@
 (function() {
   'use strict';
 
-  angular.module('ionicImgCache', ['ionic'])
+  angular
+    .module('ionicImgCache', ['ionic'])
     .run(init)
+    .provider('ionicImgCache', ionicImgCacheProvider)
     .factory('ionImgCacheSrv', ionImgCacheSrv)
     .directive('ionImgCache', ionImgCache);
 
-  init.$inject = ['$ionicPlatform'];
+  function init($ionicPlatform, ionicImgCache) {
+    /* ngInject */
 
-  function init($ionicPlatform) {
-    ImgCache.options.debug = false;
+    ImgCache.options.debug = ionicImgCache.debug;
     ImgCache.options.skipURIencoding = true;
-    ImgCache.options.chromeQuota = 50*1024*1024;
+    ImgCache.options.chromeQuota = ionicImgCache.quota * 1024 * 1024;
 
     $ionicPlatform.ready(function() {
       ImgCache.init();
     });
   }
 
-  ionImgCacheSrv.$inject = ['$q'];
+  function ionicImgCacheProvider() {
+    var debug = false;
+    var quota = 50;
+
+    this.debug = function(value) {
+      debug = !!value;
+    }
+
+    this.quota = function(value) {
+      quota = isFinite(value) ? value : 50;
+    }
+
+    this.$get = function() {
+      return {
+        debug: debug,
+        quota: chromeQuota
+      };
+    };
+  }
 
   function ionImgCacheSrv($q) {
+    /* ngInject */
+
     return {
       checkCacheStatus: checkCacheStatus,
       clearCache: clearCache
@@ -57,9 +79,9 @@
     }
   }
 
-  ionImgCache.$inject = ['ionImgCacheSrv'];
-
   function ionImgCache(ionImgCacheSrv) {
+    /* ngInject */
+
     var directive = {
       restrict: 'A',
       link: link

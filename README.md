@@ -1,6 +1,7 @@
 # ionic-img-cache
 
 [![Bower version](https://badge.fury.io/bo/ionic-img-cache.svg)](https://badge.fury.io/bo/ionic-img-cache)
+[![npm version](https://badge.fury.io/js/ionic-img-cache.svg)](https://badge.fury.io/js/ionic-img-cache)
 
 Ionic directive to cache images on first load.
 
@@ -13,24 +14,42 @@ This library works with Ionic Framework (v >= 1.0), the supported platforms bein
 
 ## Instalation
 
-* Install via bower `bower install --save ionic-img-cache`
+* Install via bower
+
+```bash bower install --save ionic-img-cache```
+
+or npm
+
+```bash npm install --save ionic-img-cache```
 * Add **imgcache.js** and **ionic-img-cache.min.js** files to your app index.html file.
-* Inject into app.js, example:
-```angular.module('app', [
+* Install required [cordova plugins](#required-cordova-plugins):
+  ```bash
+  cordova plugin add cordova-plugin-device
+  cordova plugin add cordova-plugin-file-transfer
+  ```
+* Inject as dependency into your app, example:
+
+```js
+  angular.module('app', [
       'ionic',
       'ionicImgCache'
-    ])```
+    ])
+```
+
 * Edit **config.xml** file:
   * Add `<access origin="*"/>`
-  * For Android add ```<access origin="cdvfile://*"/>
-  <allow-intent href="cdvfile://*"/>```
+  * For Android add ```
+    <access origin="cdvfile://*"/>
+    <allow-intent href="cdvfile://*"/>
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+  ```
   * For iOS add `<preference name="iosPersistentFileLocation" value="Library"/>`
 
 ### Required cordova plugins:
 
-* [File](http://docs.phonegap.com/en/edge/cordova_file_file.md.html#File_accessing_the_feature)
-* [Device](http://docs.phonegap.com/en/edge/cordova_device_device.md.html#Device_accessing_the_feature)
-* [FileTransfer](https://github.com/apache/cordova-plugin-file-transfer/blob/dev/doc/index.md)
+* [Device](https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-device/index.html)
+* [File](https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-file/index.html)
+* [FileTransfer](https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-file-transfer/index.html)
 
 ## Usage
 
@@ -38,10 +57,39 @@ Just add `ion-img-cache` attribute to `img` tag you want to cache.
 
 Example:
 
-`<img ion-img-cache ng-src="{{ imagePath }}"/>`
+```html <img ion-img-cache ng-src="{{ imagePath }}"/>```
 
-Clearing cache:
+## Clearing cache:
 
 `ionImgCacheSrv.clearCache()` - returns promise, so you can chain it with `.then` and/or `.catch`.
 
 Unfortunaly there is no way to invalidate single image now.
+
+## Options
+
+Caching can be configured via `ionicImgCacheProvider`, there are available parameters in this provider:
+
+### debug
+**Type**: Boolean
+**Default value**: false
+
+Enables ImgCache debug mode.
+
+### quota
+**Type**: Number
+**Default value**: 50
+
+Quota for storage size available for cached images in MB.
+
+Example:
+
+```js
+angular.module('app')
+  .config(function($ionicImgCacheProvider) {
+    // Enable imgCache debugging.
+    $ionicImgCacheProvider.debug(true);
+
+    // Set storage size quota to 100 MB.
+    $ionicImgCacheProvider.quota(100);
+  });
+```
