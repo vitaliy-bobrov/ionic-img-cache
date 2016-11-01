@@ -101,11 +101,14 @@ Example:
 
 ```javascript
 angular.module('app')
-  .config(function($ionicImgCacheProvider) {
+  .config(function(ionicImgCacheProvider) {
     // Enable imgCache debugging.
-    $ionicImgCacheProvider.debug(true);
+    ionicImgCacheProvider.debug(true);
 
     // Set storage size quota to 100 MB.
-    $ionicImgCacheProvider.quota(100);
+    ionicImgCacheProvider.quota(100);
+    
+    // Set foleder for cached files.
+    ionicImgCacheProvider.folder('my-cache');
   });
 ```
