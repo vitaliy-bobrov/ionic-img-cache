@@ -25,6 +25,7 @@ This library works with Ionic Framework (v >= 1.0), the supported platforms bein
 * Install required [cordova plugins](#required-cordova-plugins):
   ```
     cordova plugin add cordova-plugin-device
+    cordova plugin add cordova-plugin-file
     cordova plugin add cordova-plugin-file-transfer
   ```
 * Inject as dependency into your app, example:
