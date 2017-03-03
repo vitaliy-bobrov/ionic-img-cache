@@ -2,6 +2,7 @@
 
 [![Bower version](https://badge.fury.io/bo/ionic-img-cache.svg)](https://badge.fury.io/bo/ionic-img-cache)
 [![npm version](https://badge.fury.io/js/ionic-img-cache.svg)](https://badge.fury.io/js/ionic-img-cache)
+[![npm](https://img.shields.io/npm/dt/ionic-img-cache.svg)](https://github.com/vitaliy-bobrov/ionic-img-cache)
 
 
 Ionic directive to cache images or element background images on first load.
