@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/vitaliy-bobrov/ionic-img-cache#readme",
   "dependencies": {
-    "imgcache.js": "^1.1.1"
+    "imgcache.js": "^1.2.0"
   },
   "devDependencies": {
     "eslint-config-angular": "^0.5.0",
