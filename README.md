@@ -154,7 +154,7 @@ Example:
 ```js
 angular.module('app')
   .controller('Ctrl', function(ionImgCacheSrv) {
-    ionImgCacheSrv.checkBgCacheStatus(angular.element('#my-element))
+    ionImgCacheSrv.checkBgCacheStatus(angular.element('#my-element'))
       .then(function(path) {
         console.log('File added/found in/to cache' + path);
       })
