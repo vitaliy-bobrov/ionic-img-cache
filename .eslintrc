@@ -1,8 +1,5 @@
 {
   "extends": "angular",
-  "rules": {
-    "no-use-before-define": 0
-  },
   "env": {
     "browser": true
   },

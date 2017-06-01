@@ -1,44 +1,31 @@
 (function(document) {
   'use strict';
 
-  angular
-    .module('ionicImgCache', ['ionic'])
+  angular.module('ionicImgCache', ['ionic'])
     .run(init)
     .provider('ionicImgCache', ionicImgCacheProvider)
     .factory('ionImgCacheSrv', ionImgCacheSrv)
     .directive('ionImgCache', ionImgCache)
     .directive('ionImgCacheBg', ionImgCacheBg);
 
-  function init($ionicPlatform, ionicImgCache) {
+  function init($ionicPlatform, ionicImgCache, $log) {
     /* ngInject */
 
     ImgCache.options.skipURIencoding = true;
     ImgCache.options.debug = ionicImgCache.debug;
     ImgCache.options.localCacheFolder = ionicImgCache.folder;
     ImgCache.options.chromeQuota = ionicImgCache.quota * 1024 * 1024;
+    ImgCache.options.cacheClearSize = ionicImgCache.cacheClearSize;
 
     $ionicPlatform.ready(function() {
       ImgCache.init(function() {
-        var message = 'ionicImgCache initialized';
 
         if (ionicImgCache.debug) {
-          if (console.info) {
-            console.info(message);
-          }
-          else {
-            console.log(message);
-          }
+          $log.info('ionicImgCache initialized');
         }
       }, function() {
-        var message = 'Failed to init ionicImgCache.';
-
         if (ionicImgCache.debug) {
-          if (console.error) {
-            console.error(message);
-          }
-          else {
-            console.log(message);
-          }
+          $log.error('Failed to init ionicImgCache.');
         }
       });
     });
@@ -48,6 +35,7 @@
     var debug = false;
     var quota = 50;
     var folder = 'ionic-img-cache';
+    var cacheClearSize = 0;
 
     this.debug = function(value) {
       debug = !!value;
@@ -61,11 +49,16 @@
       folder = '' + value;
     }
 
+    this.cacheClearSize = function(value) {
+      cacheClearSize = isFinite(value) ? value : 0;
+    }
+
     this.$get = function() {
       return {
         debug: debug,
         quota: quota,
-        folder: folder
+        folder: folder,
+        cacheClearSize: cacheClearSize
       };
     };
   }
@@ -73,12 +66,72 @@
   function ionImgCacheSrv($q) {
     /* ngInject */
 
-    return {
-      checkCacheStatus: checkCacheStatus,
-      checkBgCacheStatus: checkBgCacheStatus,
-      clearCache: clearCache
-    };
+    /**
+     * Adds file to local cache.
+     * @param {string} src - image source url.
+     */
+    function add(src) {
+      var defer = $q.defer();
 
+      _checkImgCacheReady()
+        .then(function() {
+          ImgCache.cacheFile(src, function() {
+            ImgCache.isCached(src, function(path, success) {
+              defer.resolve(path);
+            }, defer.reject);
+          }, defer.reject);
+        })
+        .catch(defer.reject);
+
+      return defer.promise;
+    }
+
+    /**
+     * Gets file local url if it present in cache.
+     * @param {string} src - image source url.
+     */
+    function get(src) {
+      var defer = $q.defer();
+
+      _checkImgCacheReady()
+        .then(function() {
+          ImgCache.isCached(src, function(path, success) {
+            if (success) {
+              defer.resolve(path);
+            } else {
+              defer.reject();
+            }
+          }, defer.reject);
+        })
+        .catch(defer.reject);
+
+      return defer.promise;
+    }
+
+    /**
+     * Removes file from local cache if it present.
+     * @param {string} src - image source url.
+     */
+    function remove(src) {
+      var defer = $q.defer();
+
+      _checkImgCacheReady()
+        .then(function() {
+          ImgCache.isCached(src, function(path, success) {
+            ImgCache.removeFile(src, function() {
+              defer.resolve();
+            }, defer.reject);
+          }, defer.reject);
+        })
+        .catch(defer.reject);
+
+      return defer.promise;
+    }
+
+    /**
+     * Checks file cache status by url.
+     * @param {string} src - image source url.
+     */
     function checkCacheStatus(src) {
       var defer = $q.defer();
 
@@ -101,6 +154,10 @@
       return defer.promise;
     }
 
+    /**
+     * Checks elements background file cache status by element.
+     * @param {HTMLElement} element - element with background image.
+     */
     function checkBgCacheStatus(element) {
       var defer = $q.defer();
 
@@ -123,6 +180,9 @@
       return defer.promise;
     }
 
+    /**
+     * Clears all cahced files.
+     */
     function clearCache() {
       var defer = $q.defer();
 
@@ -135,6 +195,25 @@
       return defer.promise;
     }
 
+    /**
+     * Gets local cache size in bytes.
+     */
+    function getCacheSize() {
+      var defer = $q.defer();
+
+      _checkImgCacheReady()
+        .then(function() {
+          defer.resolve(ImgCache.getCurrentSize());
+        })
+        .catch(defer.reject);
+
+      return defer.promise;
+    }
+
+    /**
+     * Checks if imgcache library initialized.
+     * @private
+     */
     function _checkImgCacheReady() {
       var defer = $q.defer();
 
@@ -142,22 +221,27 @@
         defer.resolve();
       }
       else{
-        document.addEventListener('ImgCacheReady', function() {
+        document.addEventListener('ImgCacheReady', function() { // eslint-disable-line
           defer.resolve();
         }, false);
       }
 
       return defer.promise;
     }
+
+    return {
+      add: add,
+      get: get,
+      remove: remove,
+      checkCacheStatus: checkCacheStatus,
+      checkBgCacheStatus: checkBgCacheStatus,
+      clearCache: clearCache,
+      getCacheSize: getCacheSize
+    };
   }
 
   function ionImgCache(ionImgCacheSrv) {
     /* ngInject */
-
-    return {
-      restrict: 'A',
-      link: link
-    };
 
     function link(scope, element, attrs) {
       attrs.$observe('ngSrc', function(src) {
@@ -167,15 +251,15 @@
           });
       });
     }
-  }
-
-  function ionImgCacheBg(ionImgCacheSrv) {
-    /* ngInject */
 
     return {
       restrict: 'A',
       link: link
     };
+  }
+
+  function ionImgCacheBg(ionImgCacheSrv) {
+    /* ngInject */
 
     function link(scope, element, attrs) {
       ionImgCacheSrv.checkBgCacheStatus(element)
@@ -190,5 +274,10 @@
           });
       });
     }
+
+    return {
+      restrict: 'A',
+      link: link
+    };
   }
 })(document);
