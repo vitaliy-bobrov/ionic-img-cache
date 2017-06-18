@@ -86,7 +86,7 @@ angular.module('app')
       .then(function(path) {
         console.log('File cached in ' + path);
       })
-      .catch(funtion(err) {
+      .catch(function(err) {
         console.error(err);
       })
   });
@@ -104,7 +104,7 @@ angular.module('app')
       .then(function(path) {
         console.log('File found in cache ' + path);
       })
-      .catch(funtion(err) {
+      .catch(function(err) {
         console.error(err);
       })
   });
@@ -122,7 +122,7 @@ angular.module('app')
       .then(function() {
         console.log('File removed from cache');
       })
-      .catch(funtion(err) {
+      .catch(function(err) {
         console.error(err);
       })
   });
@@ -140,7 +140,7 @@ angular.module('app')
       .then(function(path) {
         console.log('File added/found in/to cache' + path);
       })
-      .catch(funtion(err) {
+      .catch(function(err) {
         console.error(err);
       })
   });
@@ -158,7 +158,7 @@ angular.module('app')
       .then(function(path) {
         console.log('File added/found in/to cache' + path);
       })
-      .catch(funtion(err) {
+      .catch(function(err) {
         console.error(err);
       })
   });
@@ -176,7 +176,7 @@ angular.module('app')
       .then(function(path) {
         console.log('Cache successuly cleared');
       })
-      .catch(funtion(err) {
+      .catch(function(err) {
         console.error(err);
       })
   });
@@ -194,7 +194,7 @@ angular.module('app')
       .then(function(result) {
         console.log('Cache size is ' + result + ' bytes');
       })
-      .catch(funtion(err) {
+      .catch(function(err) {
         console.error(err);
       })
   });
