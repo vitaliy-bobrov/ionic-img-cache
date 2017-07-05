@@ -1,4 +1,4 @@
-## v1.2.1
+## v1.2.2
 ### Bug fixes:
 - Change `imgcache.js` libarary dependency version, as 1.2.0 is not published to npm yet.
 
