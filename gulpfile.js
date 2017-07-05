@@ -23,7 +23,7 @@ gulp.task('scripts', function() {
   .pipe($.eslint())
   .pipe($.eslint.format())
   .pipe($.ngAnnotate())
-  .pipe($.uglify({preserveComments: 'some'}))
+  .pipe($.uglify())
   .pipe($.rename({
     suffix: '.min',
     extname: '.js'
