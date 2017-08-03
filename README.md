@@ -68,7 +68,7 @@ Example:
   `<img ion-img-cache ng-src="{{ imagePath }}"/>`
 
   Background image:
-  `<div ion-img-cache-bg>Element with abckground image set with css or ng-style</div>`
+  `<div ion-img-cache-bg>Element with background image set with css or ng-style</div>`
 
 ## Cache service public methods:
 
