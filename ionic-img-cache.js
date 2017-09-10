@@ -63,6 +63,7 @@
       return {
         debug: debug,
         quota: quota,
+        headers: headers,
         folder: folder,
         cacheClearSize: cacheClearSize
       };
