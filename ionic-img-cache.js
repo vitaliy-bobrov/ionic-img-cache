@@ -13,6 +13,7 @@
 
     ImgCache.options.skipURIencoding = true;
     ImgCache.options.debug = ionicImgCache.debug;
+    ImgCache.options.headers = ionicImgCache.headers;
     ImgCache.options.localCacheFolder = ionicImgCache.folder;
     ImgCache.options.chromeQuota = ionicImgCache.quota * 1024 * 1024;
     ImgCache.options.cacheClearSize = ionicImgCache.cacheClearSize;
