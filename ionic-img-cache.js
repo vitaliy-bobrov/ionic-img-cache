@@ -34,12 +34,17 @@
 
   function ionicImgCacheProvider() {
     var debug = false;
+    var headers = {};
     var quota = 50;
     var folder = 'ionic-img-cache';
     var cacheClearSize = 0;
 
     this.debug = function(value) {
       debug = !!value;
+    }
+    
+    this.headers = function(value) {
+      headers = value;
     }
 
     this.quota = function(value) {
