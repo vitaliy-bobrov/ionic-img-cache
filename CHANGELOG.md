@@ -1,3 +1,9 @@
+## v1.3.0
+### New:
+- Added custom headers option, thanks @Eloverflow.
+- Added priority for caching directive.
+- Added component.
+
 ## v1.2.2
 ### Bug fixes:
 - Change `imgcache.js` libarary dependency version, as 1.2.0 is not published to npm yet.

@@ -70,6 +70,9 @@ Example:
   Background image:
   `<div ion-img-cache-bg>Element with background image set with css or ng-style</div>`
 
+  Component:
+  `<ion-img-cache-component img-src="{{ imagePath }}" alt="my fancy picture"></<on-img-cache-component>`
+
 ## Cache service public methods:
 
 All methods are async, wrapped into angular `$q` service.
