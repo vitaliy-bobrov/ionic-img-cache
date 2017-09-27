@@ -220,6 +220,14 @@ Enables ImgCache debug mode.
 
 Quota for storage size available for cached images in MB.
 
+### headers
+
+**Type**: Object
+
+**Default value**: {}
+
+Adds custom request headers.
+
 ### folder
 
 **Type**: String
