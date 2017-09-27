@@ -254,6 +254,7 @@
 
     return {
       restrict: 'A',
+      priority: 98, // ngSrc priority 99.
       link: link
     };
   }
