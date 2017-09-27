@@ -13,6 +13,7 @@
 
     ImgCache.options.skipURIencoding = true;
     ImgCache.options.debug = ionicImgCache.debug;
+    ImgCache.options.headers = ionicImgCache.headers;
     ImgCache.options.localCacheFolder = ionicImgCache.folder;
     ImgCache.options.chromeQuota = ionicImgCache.quota * 1024 * 1024;
     ImgCache.options.cacheClearSize = ionicImgCache.cacheClearSize;
@@ -33,12 +34,17 @@
 
   function ionicImgCacheProvider() {
     var debug = false;
+    var headers = {};
     var quota = 50;
     var folder = 'ionic-img-cache';
     var cacheClearSize = 0;
 
     this.debug = function(value) {
       debug = !!value;
+    }
+    
+    this.headers = function(value) {
+      headers = value;
     }
 
     this.quota = function(value) {
@@ -57,6 +63,7 @@
       return {
         debug: debug,
         quota: quota,
+        headers: headers,
         folder: folder,
         cacheClearSize: cacheClearSize
       };
