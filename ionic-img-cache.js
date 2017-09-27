@@ -6,7 +6,8 @@
     .provider('ionicImgCache', ionicImgCacheProvider)
     .factory('ionImgCacheSrv', ionImgCacheSrv)
     .directive('ionImgCache', ionImgCache)
-    .directive('ionImgCacheBg', ionImgCacheBg);
+    .directive('ionImgCacheBg', ionImgCacheBg)
+    .component('ionImgCacheComponent', ionImgCacheComponent);
 
   function init($ionicPlatform, ionicImgCache, $log) {
     /* ngInject */
@@ -42,7 +43,7 @@
     this.debug = function(value) {
       debug = !!value;
     }
-    
+
     this.headers = function(value) {
       headers = value;
     }
@@ -265,6 +266,41 @@
       link: link
     };
   }
+
+  function ionImgCacheCtrl(ionImgCacheSrv) {
+    /* ngInject */
+
+    this.$onInit = function() {
+      if (!this.alt) {
+        this.alt = '';
+      }
+
+      this.checkSrc();
+    }
+
+    this.$onChanges = function(changes) {
+      if (changes && changes.imgSrc && !changes.imgSrc.isFirstChange()) {
+        this.checkSrc();
+      }
+    }
+
+    this.checkSrc = function() {
+      if (this.imgSrc) {
+        this.src = ionImgCacheSrv.checkCacheStatus(this.imgSrc);
+      } else {
+        this.src = '';
+      }
+    }
+  }
+
+  var ionImgCacheComponent = {
+    bindings: {
+      imgSrc: '<',
+      alt: '<'
+    },
+    template: '<img ng-src="{{ $ctrl.src }}" alt="{{ $ctrl.alt }}" />',
+    controller: ionImgCacheCtrl
+  };
 
   function ionImgCacheBg(ionImgCacheSrv) {
     /* ngInject */
