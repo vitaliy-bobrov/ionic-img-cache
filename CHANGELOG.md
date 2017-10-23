@@ -1,3 +1,8 @@
+## v1.3.1
+### Bug fixes:
+- Check for components support.
+- Fix component declaration issue.
+
 ## v1.3.0
 ### New:
 - Added custom headers option, thanks @Eloverflow.

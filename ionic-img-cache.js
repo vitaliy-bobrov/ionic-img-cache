@@ -6,8 +6,19 @@
     .provider('ionicImgCache', ionicImgCacheProvider)
     .factory('ionImgCacheSrv', ionImgCacheSrv)
     .directive('ionImgCache', ionImgCache)
-    .directive('ionImgCacheBg', ionImgCacheBg)
-    .component('ionImgCacheComponent', ionImgCacheComponent);
+    .directive('ionImgCacheBg', ionImgCacheBg);
+
+  if ('component' in angular) {
+    angular.module('ionicImgCache')
+      .component('ionImgCacheComponent', {
+        bindings: {
+          imgSrc: '<',
+          alt: '<'
+        },
+        template: '<img ng-src="{{ $ctrl.src }}" alt="{{ $ctrl.alt }}" />',
+        controller: ionImgCacheCtrl
+      });
+  }
 
   function init($ionicPlatform, ionicImgCache, $log) {
     /* ngInject */
@@ -292,15 +303,6 @@
       }
     }
   }
-
-  var ionImgCacheComponent = {
-    bindings: {
-      imgSrc: '<',
-      alt: '<'
-    },
-    template: '<img ng-src="{{ $ctrl.src }}" alt="{{ $ctrl.alt }}" />',
-    controller: ionImgCacheCtrl
-  };
 
   function ionImgCacheBg(ionImgCacheSrv) {
     /* ngInject */

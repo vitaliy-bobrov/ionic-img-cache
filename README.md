@@ -71,6 +71,7 @@ Example:
   `<div ion-img-cache-bg>Element with background image set with css or ng-style</div>`
 
   Component:
+  **Note: Components are supported with angular >=1.5.0, if older version used without `component` polyfill, component can't be used.**
   `<ion-img-cache-component img-src="{{ imagePath }}" alt="my fancy picture"></<on-img-cache-component>`
 
 ## Cache service public methods:
