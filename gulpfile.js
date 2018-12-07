@@ -1,22 +1,21 @@
 'use strict';
 
-var gulp = require('gulp');
-var $ = require('gulp-load-plugins')();
+const gulp = require('gulp');
+const $ = require('gulp-load-plugins')();
 
-var config = {
+const config = {
   scripts: {
    src: './ionic-img-cache.js',
    dest: './'
   }
 };
 
-var onError = function (error) {
+function onError(error) {
   console.log(error.toString());
   this.emit('end');
-};
+}
 
-gulp.task('scripts', function() {
-  return gulp.src(config.scripts.src)
+gulp.task('scripts', () => gulp.src(config.scripts.src)
   .pipe($.plumber({
     errorHandler: onError
   }))
@@ -29,17 +28,11 @@ gulp.task('scripts', function() {
     extname: '.js'
   }))
   .pipe(gulp.dest(config.scripts.dest))
-  .pipe($.size({title: 'scripts'}));
-});
+  .pipe($.size({title: 'scripts'}))
+);
 
-gulp.task('build', function() {
-  gulp.start('scripts');
-});
+gulp.task('build', gulp.series('scripts'));
 
-gulp.task('watch', function() {
-  gulp.watch(config.scripts.src, ['scripts']);
-});
+gulp.task('watch', () => gulp.watch(config.scripts.src, gulp.series('scripts')));
 
-gulp.task('default', ['build'], function() {
-  gulp.start('watch');
-});
+gulp.task('default', gulp.series('build', 'watch'));
